@@ -1,0 +1,30 @@
+# 注意这里的vertion是docker-compose yaml格式的version 不同的version支持不同的语法
+version: '3'
+services:
+    nginx:
+        # 依赖关系 先跑php
+        depends_on:
+            - "php"
+        image: "nginx:1.12.2-alpine"
+        # 数据卷
+        volumes:
+            - "$PWD/conf.d:/etc/nginx/conf.d"
+            - "$PWD/www:/usr/share/nginx/html"
+        # 端口映射
+        ports:
+            - "80:80"
+        # 容器名称
+        container_name: "compose-nginx"
+    php:
+        # restart: always
+        build: php/
+        volumes:
+            - "$PWD/www:/var/www/html"
+        container_name: "compose-php"
+    mongo:
+        image: "mongo:3.4.11"
+        volumes: 
+            - "/data/mongodb:/data/db"
+        ports: 
+            - "27017:27017"
+        container_name: "compose-mongo"
