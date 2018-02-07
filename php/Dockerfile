@@ -3,28 +3,24 @@ FROM php:fpm
 ENV TIMEZONE Asia/Shanghai
 ENV PHP_EXT_SWOOLE=swoole-2.0.12
 ENV HIREDIS=v0.13.3
+ENV LIBMEMCACED=libmemcached-1.0.18
 
 RUN sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list && \
     apt-get update && apt-get install -y  --no-install-recommends \
-    curl \
+    curl git unzip wget \
     apt-utils \
     build-essential \
     libssl-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libmagickwand-dev \
     libpng-dev && \
     cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     echo "${TIMEZONE}" > /etc/timezone && \
-    docker-php-ext-install -j$(nproc) bcmath mysqli && \
     docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-png-dir=/usr/include/ && \
-    docker-php-ext-install gd && \
-    pecl channel-update pecl.php.net && \
-    pecl install imagick && \
-    docker-php-ext-enable imagick && \
+    docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql gd && \
     pecl install mongodb && \
     docker-php-ext-enable mongodb && \
     pecl install xdebug && \
@@ -43,7 +39,7 @@ RUN sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list && \
 
 # 安装swoole
 RUN apt-get update && \
-    apt-get install -y wget build-essential apt-utils && \
+    apt-get install -y wget build-essential apt-utils libsasl2-dev && \
     # hiredis
     cd /tmp && \
     wget -q https://github.com/redis/hiredis/archive/${HIREDIS}.tar.gz && \
@@ -63,14 +59,15 @@ RUN apt-get update && \
     docker-php-ext-configure /tmp/$PHP_EXT_SWOOLE --enable-async-redis --enable-openssl --enable-sockets=/usr/local/include/php/ext/sockets && \
     docker-php-ext-install /tmp/$PHP_EXT_SWOOLE && \
     rm -rf /tmp/${PHP_EXT_SWOOLE}* && \
-    # # libmemcached
-    # wget -q https://launchpadlibrarian.net/165454254/${LIBMEMCACED}.tar.gz && \
-    # mkdir /tmp/$LIBMEMCACED && \
-    # tar -zxf $LIBMEMCACED.tar.gz -C /tmp/$LIBMEMCACED --strip-components=1 && \
-    # cd /tmp/$LIBMEMCACED && ./configure && make && make install && cd /tmp &&\
-    # pecl install memcached && \
-    # docker-php-ext-enable memcached && \
-    # rm -rf /tmp/$LIBMEMCACED* && \
+    # libmemcached
+    wget -q https://launchpadlibrarian.net/165454254/${LIBMEMCACED}.tar.gz && \
+    mkdir /tmp/$LIBMEMCACED && \
+    tar -zxf $LIBMEMCACED.tar.gz -C /tmp/$LIBMEMCACED --strip-components=1 && \
+    cd /tmp/$LIBMEMCACED && ./configure && make -j && make install && cd /tmp &&\
+    pecl install memcached && \
+    docker-php-ext-enable memcached && \
+    rm -rf /tmp/$LIBMEMCACED* && \
+    rm -rf /tmp/pear/* && \
     apt-get remove build-essential -y && \
     apt-get clean && apt-get autoclean && apt-get autoremove -y
 

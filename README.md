@@ -14,10 +14,10 @@ php镜像来自官方`php:fpm`，目前最新稳定版本是`7.2.1`
 - mysqli
 - mongodb
 - GD
-- imagick
+- memcached
 - xdebug
 
-添加了 `composer`
+手动添加了 `composer` ，并替换了国内源
 
 ### nginx
 
@@ -31,7 +31,7 @@ php镜像来自官方`php:fpm`，目前最新稳定版本是`7.2.1`
 
 可以列出dockerhub中相关镜像的版本列表：`docker_show_tags.sh`
 
-使用方法：
+使用示例：
 ```sh
 $ sudo chmod +x docker_show_tags.sh
 $ ./docker_show_tags.sh php
