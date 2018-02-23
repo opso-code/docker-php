@@ -6,30 +6,31 @@
 
 ### php
 
-php镜像来自官方`php:fpm`，目前最新稳定版本是`7.2.1`
+php镜像来自官方 `php:fpm`，目前最新稳定版本是`7.2.1`
 在此基础上添加了以下扩展：
 
 - swoole2.0
 - redis
 - mysqli
+- pdo_mysql
 - mongodb
 - GD
 - memcached
 - xdebug
 
-手动添加了 `composer` ，并替换了国内源
+手动添加了 `composer` 并替换了国内源
 
 ### nginx
 
-直接使用`nginx:1.12.2-alpine`镜像
+直接使用 `nginx:1.12.2-alpine` 镜像
 
 ### mongodb
 
-直接使用`mongodb:3.4.11`镜像
+直接使用 `mongodb:3.4.11` 镜像
 
 ## 镜像版本查询工具
 
-可以列出dockerhub中相关镜像的版本列表：`docker_show_tags.sh`
+可以列出[dockerhub镜像仓库](https://hub.docker.com)中相关镜像的版本列表：`docker_show_tags.sh`
 
 使用示例：
 ```sh
