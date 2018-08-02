@@ -4,11 +4,11 @@
 
 ## 环境构成
 
-将 `php-rpm` 和 `nginx` 容器分开，通过`php:9000`端口通信
+将 `php-fpm` 和 `nginx` 容器分开，通过 `php:9000` 端口通信
 
 ### php
 
-php镜像来自官方 `php:fpm`，目前最新稳定版本是`7.2.8`
+php镜像来自官方 `php:fpm`，目前最新稳定版本是 `7.2.8`
 
 在此基础上添加了以下等扩展：
 
@@ -29,7 +29,7 @@ php镜像来自官方 `php:fpm`，目前最新稳定版本是`7.2.8`
 
 ### mongodb
 
-直接使用的 `mongodb:3.4.11` 镜像，根据具体情况修改`/data/mongodb`本地映射的数据库文件夹，如不需要可注释掉，其他数据库同理。
+直接使用的 `mongodb:3.4.11` 镜像，根据具体情况修改 `/data/mongodb` 本地映射的数据库文件夹，如不需要可注释掉，其他数据库同理。
 
 ## 运行
 
@@ -40,3 +40,5 @@ $ docker-compose up -d
 // 进入php容器bash环境
 $ docker exec -it compose-php bash
 ```
+
+浏览器打开 http://127.0.0.1 Bingo!
