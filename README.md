@@ -8,24 +8,25 @@
 
 ### php
 
-php镜像来自官方 `php:fpm`，目前最新稳定版本是 `7.2.8`
+php镜像来自官方 `php:fpm`，目前最新稳定版本是 `7.2.12`
 
 在此基础上添加了以下等扩展：
 
-- swoole-4.0.3
+- swoole-4.2.2
 - redis/hiredis
 - mysqli
 - pdo_mysql
 - mongodb
 - GD
 - memcached
+- xdebug
 - ...
 
 手动添加了 `composer` 并替换了国内源，修改了时区（`Asia/Shanghai`）
 
 ### nginx
 
-直接使用的 `nginx:1.12.2-alpine` 镜像
+直接使用的 `nginx:1.14.1-alpine` 镜像
 
 ### mongodb
 
