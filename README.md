@@ -83,7 +83,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 我们需要复制一份 `.env` 配置，根据自己的需求修改。
 
 ```bash
-$ cp example.env .env
+$ cp env-example .env
 ```
 
 变量说明：
@@ -119,7 +119,7 @@ $ cp example.env .env
 比如取一个虚拟站点名字 `local.app`，然后设置好站点配置。
 
 ```nginx
-$ cp nginx/conf.d/example.conf nginx/conf.d/local.app.conf
+$ cp nginx/conf.d/local.app.conf.example nginx/conf.d/local.app.conf
 $ vim nginx/conf.d/local.app.conf
 server {
     listen       80;
