@@ -11,10 +11,10 @@ services:
       - INSTALL_XDEBUG=${INSTALL_XDEBUG}
       - HIREDIS_VERSION=${HIREDIS_VERSION}
     image: lnmp-php
+    container_name: compose-php
     restart: always
     volumes:
       - ${WWWROOT}:/data/wwwroot
-    container_name: compose-php
     networks:
       - lnmp-tier
   nginx:
@@ -25,6 +25,7 @@ services:
       - CHANGE_SOURCE=${CHANGE_SOURCE}
       - NGINX_VERSION=${NGINX_VERSION}
     image: lnmp-nginx
+    container_name: compose-nginx
     restart: always
     depends_on:
       - php
@@ -32,8 +33,6 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${WWWROOT}:/data/wwwroot
-    container_name: compose-nginx
-    networks:
     ports:
       - 80:80
     networks:
@@ -44,6 +43,7 @@ services:
       args: 
         - MYSQL_VERSION=${MYSQL_VERSION}
     image: lnmp-mysql
+    container_name: compose-mysql
     environment: 
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
@@ -51,10 +51,11 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes: 
       - ${DB_MYSQL_PATH}:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     ports: 
       - ${MYSQL_PORT}:3306
+    networks:
+      - lnmp-tier
 
 networks:
   lnmp-tier:

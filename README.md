@@ -6,7 +6,11 @@
 
 将 `php-fpm` 和 `nginx` 容器分开，通过 `php:9000` 端口通信。
 
-后续将添加其他数据库支持。
+同时添加常见数据库支持。
+
+- [x] MySQL
+- [ ] MongoDB
+- [ ] Redis
 
 Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.coding.me/post/docker-php/)
 
@@ -56,6 +60,14 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 默认使用 `mysql:5.6` 镜像，可在 `.env` 中定义版本。
 
+构建适合已经将 `./mysql/my.conf` 加入到镜像中了，不需要再额外复制。
+
+如果需要默认导入数据库数据，需要在 `./mysql/initdb.d/ `中放入SQL文件。
+
+数据库文件默认放到了 `/data/db/mysql` 可以根据时间情况修改，如果在Windows虚拟机下，注意不要放到共享目录下，否则mysql报错不支持 `Linux aio`。
+
+启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mysql数据库，登录host填写 `mysql` 就可以了，不需要知道mysql所在的具体ip。
+
 ### Redis
 
 待续
@@ -79,7 +91,7 @@ $ cp example.env .env
 | NGINX_VERSION       | nginx指定版本                                        |
 | SWOOLE_VERSION      | swoole扩展指定版本                                   |
 | INSTALL_XDEBUG      | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
-| HIREDIS_VERSION     | hiredis版本                                          |
+| HIREDIS_VERSION     | hiredis版本（swoole开启同步redis用）                 |
 | MYSQL_ROOT_PASSWORD | mysql管理员密码                                      |
 | MYSQL_USER          | 需要新加的用户名                                     |
 | MYSQL_PASS          | 需要新加的用户的密码                                 |
