@@ -66,7 +66,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 默认使用 `mysql:5.6` 镜像，可在 `.env` 中定义版本。
 
-构建适合已经将 `./mysql/my.conf` 加入到镜像中了，不需要再额外复制。
+构建时候已经将 `./mysql/my.conf` 加入到镜像中了，不需要再额外复制。
 
 如果需要默认导入数据库数据，需要在 `./mysql/initdb.d/ `中放入SQL文件。
 
