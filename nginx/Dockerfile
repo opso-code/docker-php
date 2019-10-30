@@ -1,7 +1,5 @@
-ARG NGINX_VERSION
-
+ARG NGINX_VERSION=stable
 FROM nginx:${NGINX_VERSION}-alpine
-
 LABEL maintainer="opso <945206413@qq.com>"
 
 ARG TIMEZONE=Asia/Shanghai

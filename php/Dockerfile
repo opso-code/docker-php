@@ -1,7 +1,5 @@
-ARG PHP_VERSION
-
+ARG PHP_VERSION=7.2
 FROM php:${PHP_VERSION}-fpm
-
 LABEL maintainer="opso <945206413@qq.com>"
 
 # replace sources.list
