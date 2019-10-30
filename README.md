@@ -6,22 +6,27 @@
 
 将 `php-fpm` 和 `nginx` 容器分开，通过 `php:9000` 端口通信。
 
-后续将添加其他数据库支持
+后续将添加其他数据库支持。
 
+Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.coding.me/post/docker-php/)
 
 ### PHP
 
-`php-fpm` 镜像来自官方 `php:fpm`，目前最新稳定版本是 `7.2.12`
+使用的官方 `php:fpm` 镜像，可在 `.env` 中定义具体版本，默认 `7.3.11-fpm`。
 
-在此基础上添加或编译开启了以下等扩展：
+> 默认替换了国内源，修改了时区（`Asia/Shanghai`），可在 `.env` 中自定义。
+
+在此基础上添加或编译开启了以下扩展：
 
 - swoole
 - redis/hiredis
 - mysqli
 - pdo_mysql
 - mongodb
-- GD
 - memcached
+- GD
+- imagick
+- gmp
 - xdebug
 - bcmath
 - sockets
@@ -34,12 +39,14 @@
 说明：
 
 - `swoole` 版本默认`4.4.0`，编译参数可自行修改，默认是 `--enable-async-redis --enable-mysqlnd --enable-sockets --enable-openssl`
-- 添加了 `composer` 支持，并替换了国内源，修改了时区（`Asia/Shanghai`）
+- 添加了 `composer` 支持
 - 添加了 `xdebug` 支持，默认指定 `xdebug.idekey = PHPSTORM`，端口是 `9001`，可以在 `phpstorm` 中配置，实现逐步调试功能。
 
 ### Nginx
 
-使用的 `nginx:stable-alpine` 镜像，替换了国内源，修改了时区（`Asia/Shanghai`），可以在 `.env` 中设置。
+使用的 `nginx:stable-alpine` （默认）镜像。
+
+> 默认替换了国内源，修改了时区（`Asia/Shanghai`），可在 `.env` 中自定义。
 
 ### Mongodb
 
@@ -63,15 +70,19 @@ $ cp example.env .env
 
 变量说明：
 
-- WWWROOT php代码目录
-- TIMEZONE 时区设置
-- CHANGE_SOURCE 是否改为国内源地址（true为修改）
-- PHP_VERSION php版本
-- NGINX_VERSION nginx版本
-- SWOOLE_VERSION swoole扩展版本
-- INSTALL_XDEBUG 是否安装xdebug（注意，命令行下运行与swoole协程冲突）
+| 环境变量       | 说明                                                 |
+| -------------- | ---------------------------------------------------- |
+| WWWROOT        | Web项目目录                                          |
+| TIMEZONE       | 系统时区设置                                         |
+| CHANGE_SOURCE  | 是否改为国内源地址（true为修改）                     |
+| PHP_VERSION    | php指定版本                                          |
+| NGINX_VERSION  | nginx指定版本                                        |
+| SWOOLE_VERSION | swoole扩展指定版本                                   |
+| INSTALL_XDEBUG | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
 
-## nginx 站点配置
+
+
+## Nginx 站点配置
 
 为了方便本地开发调试，建议在本地使用hosts域名方式区分多站点。
 

@@ -32,8 +32,10 @@ RUN apt-get update && \
     libssl-dev \
     libmcrypt-dev \
     libmemcached-dev \
-    apt-utils \
-    && rm -rf /var/lib/apt/lists/*
+    libmagickwand-dev \
+    imagemagick \
+    libgmp-dev \
+    apt-utils
 
 # install hiredis
 RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz \
@@ -54,13 +56,15 @@ RUN pecl channel-update pecl.php.net \
     --enable-gd-native-ttf \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql gd sockets pcntl sysvmsg sysvsem sysvshm \
+    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql gd gmp sockets pcntl sysvmsg sysvsem sysvshm \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
     && pecl install redis \
     && docker-php-ext-enable redis \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     && pecl clear-cache
 
 # install xdebug and config phpstom xdebug
@@ -99,6 +103,11 @@ RUN curl -sS https://install.phpcomposer.com/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && composer config -g repositories.packagist composer https://packagist.phpcomposer.com \
     && composer self-update --clean-backups
+
+# clean up
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    rm /var/log/lastlog /var/log/faillog
 
 EXPOSE 9000
 CMD ["php-fpm"]
