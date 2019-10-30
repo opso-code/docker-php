@@ -56,6 +56,24 @@ services:
       - ${MYSQL_PORT}:3306
     networks:
       - lnmp-tier
+  mongo:
+    build:
+      context: ./mongo
+      args: 
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    image: lnmp-mongo
+    container_name: compose-mongo
+    environment:
+        - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASS}
+        - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    volumes: 
+      - ${DB_MONGO_PATH}:/data/db
+      - ./mongo/initdb.d:/docker-entrypoint-initdb.d
+    ports: 
+      - ${MONGO_PORT}:27017
+    networks:
+      - lnmp-tier
 
 networks:
   lnmp-tier:

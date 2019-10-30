@@ -9,7 +9,7 @@
 同时添加常见数据库支持。
 
 - [x] MySQL
-- [ ] MongoDB
+- [x] MongoDB
 - [ ] Redis
 
 Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.coding.me/post/docker-php/)
@@ -54,7 +54,13 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 ### Mongodb
 
-待续
+默认使用 `mongo:3.0.15` 镜像，可在 `.env` 中定义版本。
+
+如果需要初始化一些脚本，需要在 `./mongo/initdb.d/`中放入 `.sh` 脚本文件。
+
+数据库文件默认放到了 `/data/db/mongodb` 可以根据实际情况修改
+
+启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mongo数据库，登录host填写 `mongo` 就可以了，不需要知道mongodb所在的具体ip。
 
 ### MySQL
 
@@ -64,7 +70,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 如果需要默认导入数据库数据，需要在 `./mysql/initdb.d/ `中放入SQL文件。
 
-数据库文件默认放到了 `/data/db/mysql` 可以根据时间情况修改，如果在Windows虚拟机下，注意不要放到共享目录下，否则mysql报错不支持 `Linux aio`。
+数据库文件默认放到了 `/data/db/mysql` 可以根据实际情况修改，如果在Windows虚拟机下，注意不要放到共享目录下，否则mysql报错不支持 `Linux aio`。
 
 启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mysql数据库，登录host填写 `mysql` 就可以了，不需要知道mysql所在的具体ip。
 
@@ -95,7 +101,14 @@ $ cp example.env .env
 | MYSQL_ROOT_PASSWORD | mysql管理员密码                                      |
 | MYSQL_USER          | 需要新加的用户名                                     |
 | MYSQL_PASS          | 需要新加的用户的密码                                 |
-| MYSQL_PORT          | MySQL映射端口                                        |
+| MYSQL_PORT          | mysql映射端口                                        |
+| MYSQL_DATABASE      | 登录数据库名                                         |
+| MONGO_VERSION       | mongodb版本                                          |
+| DB_MONGO_PATH       | mongodb存储目录                                      |
+| MYSQL_PORT          | mongodb映射端口                                      |
+| MONGO_ROOT_USER     | 初始化管理员用户名                                   |
+| MONGO_ROOT_PASS     | 初始化管理员密码                                     |
+| MONGO_DATABASE      | 登录数据库名                                         |
 
 
 
