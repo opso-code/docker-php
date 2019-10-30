@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+### PHP-FPM ### 
   php:
     build:
       context: ./php
@@ -17,6 +19,7 @@ services:
       - ${WWWROOT}:/data/wwwroot
     networks:
       - lnmp-tier
+### NGINX ###
   nginx:
     build:
       context: ./nginx
@@ -37,6 +40,7 @@ services:
       - 80:80
     networks:
       - lnmp-tier
+### MYSQL ###
   mysql:
     build:
       context: ./mysql
@@ -56,11 +60,12 @@ services:
       - ${MYSQL_PORT}:3306
     networks:
       - lnmp-tier
+### MONGODB ###
   mongo:
     build:
       context: ./mongo
       args: 
-        - MYSQL_VERSION=${MYSQL_VERSION}
+        - MONGO_VERSION=${MONGO_VERSION}
     image: lnmp-mongo
     container_name: compose-mongo
     environment:
