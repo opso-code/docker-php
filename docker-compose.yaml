@@ -9,6 +9,7 @@ services:
       - PHP_VERSION=${PHP_VERSION}
       - SWOOLE_VERSION=${SWOOLE_VERSION}
       - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+      - HIREDIS_VERSION=${HIREDIS_VERSION}
     image: lnmp-php
     restart: always
     volumes:
@@ -37,6 +38,23 @@ services:
       - 80:80
     networks:
       - lnmp-tier
+  mysql:
+    build:
+      context: ./mysql
+      args: 
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    image: lnmp-mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASS}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes: 
+      - ${DB_MYSQL_PATH}:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/my.cnf
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+    ports: 
+      - ${MYSQL_PORT}:3306
 
 networks:
   lnmp-tier:

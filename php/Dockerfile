@@ -33,10 +33,12 @@ RUN apt-get update && \
     libmagickwand-dev \
     imagemagick \
     libgmp-dev \
-    apt-utils
+    apt-utils \
+    && rm -rf /var/lib/apt/lists/*
 
 # install hiredis
-RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz \
+ARG HIREDIS_VERSION=0.14.0
+RUN wget https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz -O hiredis.tar.gz \
     && mkdir -p hiredis \
     && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 \
     && rm hiredis.tar.gz \

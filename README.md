@@ -54,7 +54,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 ### MySQL
 
-待续
+默认使用 `mysql:5.6` 镜像，可在 `.env` 中定义版本。
 
 ### Redis
 
@@ -70,15 +70,20 @@ $ cp example.env .env
 
 变量说明：
 
-| 环境变量       | 说明                                                 |
-| -------------- | ---------------------------------------------------- |
-| WWWROOT        | Web项目目录                                          |
-| TIMEZONE       | 系统时区设置                                         |
-| CHANGE_SOURCE  | 是否改为国内源地址（true为修改）                     |
-| PHP_VERSION    | php指定版本                                          |
-| NGINX_VERSION  | nginx指定版本                                        |
-| SWOOLE_VERSION | swoole扩展指定版本                                   |
-| INSTALL_XDEBUG | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
+| 环境变量            | 说明                                                 |
+| ------------------- | ---------------------------------------------------- |
+| WWWROOT             | Web项目目录                                          |
+| TIMEZONE            | 系统时区设置                                         |
+| CHANGE_SOURCE       | 是否改为国内源地址（true为修改）                     |
+| PHP_VERSION         | php指定版本                                          |
+| NGINX_VERSION       | nginx指定版本                                        |
+| SWOOLE_VERSION      | swoole扩展指定版本                                   |
+| INSTALL_XDEBUG      | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
+| HIREDIS_VERSION     | hiredis版本                                          |
+| MYSQL_ROOT_PASSWORD | mysql管理员密码                                      |
+| MYSQL_USER          | 需要新加的用户名                                     |
+| MYSQL_PASS          | 需要新加的用户的密码                                 |
+| MYSQL_PORT          | MySQL映射端口                                        |
 
 
 
