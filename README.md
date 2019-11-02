@@ -8,6 +8,8 @@
 
 同时添加常见数据库支持。
 
+> `docker-compose.yaml` 默认只开启 `php-fpm` 和 nginx`，需要其他服务解开注释就好。
+
 - [x] MySQL
 - [x] MongoDB
 - [ ] Redis
@@ -23,7 +25,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 在此基础上添加或编译开启了以下扩展：
 
 - swoole
-- redis/hiredis
+- redis/hiredis
 - mysqli
 - pdo_mysql
 - mongodb
@@ -156,3 +158,13 @@ $ docker-compose up
 ```
 
 浏览器打开 http://local.app 就可以看到php站点了 :tada::tada::tada:
+
+### 可能遇到的问题
+
+> Package "mongodb" Version "1.6.0" does not have REST xml available
+
+在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶显。
+
+> ERROR: Service 'nginx' failed to build: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+
+在拉取 nginx 镜像的时候可能会发生，也是由于网络问题，

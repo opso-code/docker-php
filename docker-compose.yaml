@@ -40,45 +40,45 @@ services:
       - 80:80
     networks:
       - lnmp-tier
-### MYSQL ###
-  mysql:
-    build:
-      context: ./mysql
-      args: 
-        - MYSQL_VERSION=${MYSQL_VERSION}
-    image: lnmp-mysql
-    container_name: compose-mysql
-    environment: 
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASS: ${MYSQL_PASS}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    volumes: 
-      - ${DB_MYSQL_PATH}:/var/lib/mysql
-      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
-    ports: 
-      - ${MYSQL_PORT}:3306
-    networks:
-      - lnmp-tier
-### MONGODB ###
-  mongo:
-    build:
-      context: ./mongo
-      args: 
-        - MONGO_VERSION=${MONGO_VERSION}
-    image: lnmp-mongo
-    container_name: compose-mongo
-    environment:
-        - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASS}
-        - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
-    volumes: 
-      - ${DB_MONGO_PATH}:/data/db
-      - ./mongo/initdb.d:/docker-entrypoint-initdb.d
-    ports: 
-      - ${MONGO_PORT}:27017
-    networks:
-      - lnmp-tier
+# ### MYSQL ###
+#   mysql:
+#     build:
+#       context: ./mysql
+#       args: 
+#         - MYSQL_VERSION=${MYSQL_VERSION}
+#     image: lnmp-mysql
+#     container_name: compose-mysql
+#     environment: 
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_USER: ${MYSQL_USER}
+#       MYSQL_PASS: ${MYSQL_PASS}
+#       MYSQL_DATABASE: ${MYSQL_DATABASE}
+#     volumes: 
+#       - ${DB_MYSQL_PATH}:/var/lib/mysql
+#       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+#     ports: 
+#       - ${MYSQL_PORT}:3306
+#     networks:
+#       - lnmp-tier
+# ### MONGODB ###
+#   mongo:
+#     build:
+#       context: ./mongo
+#       args: 
+#         - MONGO_VERSION=${MONGO_VERSION}
+#     image: lnmp-mongo
+#     container_name: compose-mongo
+#     environment:
+#         - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+#         - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASS}
+#         - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+#     volumes: 
+#       - ${DB_MONGO_PATH}:/data/db
+#       - ./mongo/initdb.d:/docker-entrypoint-initdb.d
+#     ports: 
+#       - ${MONGO_PORT}:27017
+#     networks:
+#       - lnmp-tier
 
 networks:
   lnmp-tier:
