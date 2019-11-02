@@ -1,6 +1,6 @@
-#  Docker化PHP环境
+# Docker化PHP环境
 
-使用 **docker-compose** 快速搭建 **php** 开发环境。
+:whale: 使用 **docker-compose** 快速搭建 **php** 开发环境。
 
 ## 环境构成
 
@@ -161,10 +161,12 @@ $ docker-compose up
 
 ### 可能遇到的问题
 
+:rotating_light: 以下问题可能会在国内网络下发生。
+
+1. 在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶显。
+
 > Package "mongodb" Version "1.6.0" does not have REST xml available
 
-在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶显。
+2. 在拉取 nginx 镜像的时候可能会发生，也是由于网络问题。
 
 > ERROR: Service 'nginx' failed to build: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
-
-在拉取 nginx 镜像的时候可能会发生，也是由于网络问题，
