@@ -1,4 +1,8 @@
-# timezone 时区
+#######################################
+# $ cp env-example .env
+#######################################
+
+# timezone and source site
 TIMEZONE=Asia/Shanghai
 TZ=UTC
 CHANGE_SOURCE=true
