@@ -16,6 +16,8 @@
 
 Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.coding.me/post/docker-php/)
 
+> 注：国内环境下，推荐使用 [DaoCloud镜像加速器](https://www.daocloud.io/mirror) 加速Docker镜像下载。
+
 ### PHP
 
 使用的官方 `php:fpm` 镜像，可在 `.env` 中定义具体版本，默认 `7.3.11-fpm`。
@@ -25,7 +27,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 在此基础上添加或编译开启了以下扩展：
 
 - swoole
-- redis/hiredis
+- redis/hiredis
 - mysqli
 - pdo_mysql
 - mongodb
@@ -50,7 +52,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 ### Nginx
 
-使用的 `nginx:stable-alpine` （默认）镜像。
+使用的 `nginx:stable-alpine` 镜像（默认）。
 
 > 默认替换了国内源，修改了时区（`Asia/Shanghai`），可在 `.env` 中自定义。
 
@@ -154,7 +156,11 @@ server {
 
 ```bash
 $ docker-compose build
-$ docker-compose up
+// 后台运行
+$ docker-compose up -d
+// 进入php容器bash环境
+$ docker-compose exec -it compose-php bash
+
 ```
 
 浏览器打开 http://local.app 就可以看到php站点了 :tada::tada::tada:
@@ -163,7 +169,7 @@ $ docker-compose up
 
 :rotating_light: 以下问题可能会在国内网络下发生。
 
-1. 在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶显。
+1. 在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶现。
 
 > Package "mongodb" Version "1.6.0" does not have REST xml available
 
