@@ -19,6 +19,7 @@ RUN apt-get update && \
     curl \
     wget \
     zip \
+    bzip2 \
     git \
     unzip \
     procps \
@@ -33,6 +34,7 @@ RUN apt-get update && \
     libmagickwand-dev \
     imagemagick \
     libgmp-dev \
+    libzip-dev \
     apt-utils \
     && rm -rf /var/lib/apt/lists/*
 
@@ -56,7 +58,7 @@ RUN pecl channel-update pecl.php.net \
     --enable-gd-native-ttf \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install -j$(nproc) bcmath mysqli pdo_mysql gd gmp sockets pcntl sysvmsg sysvsem sysvshm \
+    && docker-php-ext-install -j$(nproc) zip bz2 bcmath mysqli pdo_mysql gd gmp sockets pcntl sysvmsg sysvsem sysvshm \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
     && pecl install memcached \
