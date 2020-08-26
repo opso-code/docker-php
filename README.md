@@ -8,13 +8,13 @@
 
 同时添加常见数据库支持。
 
-> `docker-compose.yaml` 默认只开启 `php-fpm` 和 nginx`，需要其他服务解开注释就好。
+> `docker-compose.yaml` 默认只开启 `php-fpm` 和 `nginx`，需要其他服务解开注释就好。
 
 - [x] MySQL
 - [x] MongoDB
 - [ ] Redis
 
-Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.coding.me/post/docker-php/)
+Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso-code.github.io/post/docker-php/)
 
 > 注：国内环境下，推荐使用 [DaoCloud镜像加速器](https://www.daocloud.io/mirror) 加速Docker镜像下载。
 
@@ -52,9 +52,9 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 ### Nginx
 
-使用的 `nginx:stable-alpine` 镜像（默认）。
+使用的 `nginx:stable-alpine` 镜像（默认），可在 `.env` 中定义版本。
 
-> 默认替换了国内源，修改了时区（`Asia/Shanghai`），可在 `.env` 中自定义。
+> 默认替换了国内源，修改了时区（`Asia/Shanghai`），见 [.env 配置说明](#.env 配置说明)
 
 ### Mongodb
 
@@ -64,7 +64,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 数据库文件默认放到了 `/data/db/mongodb` 可以根据实际情况修改
 
-启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mongo数据库，登录host填写 `mongo` 就可以了，不需要知道mongodb所在的具体ip。
+启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mongo数据库，登录时`host`输入填写 `mongo` 就可以连接了。
 
 ### MySQL
 
@@ -74,15 +74,15 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso.
 
 如果需要默认导入数据库数据，需要在 `./mysql/initdb.d/ `中放入SQL文件。
 
-数据库文件默认放到了 `/data/db/mysql` 可以根据实际情况修改，如果在Windows虚拟机下，注意不要放到共享目录下，否则mysql报错不支持 `Linux aio`。
+数据库文件默认放到了 `/data/db/mysql` 可以根据实际情况修改；注意，如果在Windows虚拟机下，不要放到虚拟机共享目录下，否则mysql启动报错，不支持 `Linux aio`。
 
-启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mysql数据库，登录host填写 `mysql` 就可以了，不需要知道mysql所在的具体ip。
+启动后可以使用 `wwwroot` 中的 `adminer.php` 通过web访问mysql数据库，登录`host`填写 `mysql` 就可以了。
 
 ### Redis
 
 待续
 
-## .env 配置
+## .env 配置说明
 
 我们需要复制一份 `.env` 配置，根据自己的需求修改。
 
@@ -116,9 +116,10 @@ $ cp env-example .env
 
 
 
+
 ## Nginx 站点配置
 
-为了方便本地开发调试，建议在本地使用hosts域名方式区分多站点。
+为了方便本地开发调试，建议在本地使用`hosts`域名方式区分多站点。
 
 比如取一个虚拟站点名字 `local.app`，然后设置好站点配置。
 
@@ -152,6 +153,8 @@ server {
 192.168.33.10 local.app
 ```
 
+这样访问`local.app`域名会重定向到你的虚拟机里的nginx服务了。
+
 ## 运行
 
 ```bash
@@ -167,7 +170,7 @@ $ docker-compose exec -it compose-php bash
 
 ### 可能遇到的问题
 
-:rotating_light: 以下问题可能会在国内网络下发生。
+:rotating_light: 以下问题可能会在国内网络下发生，所以强烈建议使用docker加速器加速。
 
 1. 在安装mognodb扩展的时候遇到的问题，其实是由于网络问题，偶现。
 
