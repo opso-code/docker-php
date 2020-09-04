@@ -101,7 +101,7 @@ $ cp env-example .env
 | NGINX_VERSION       | nginx指定版本                                        |
 | SWOOLE_VERSION      | swoole扩展指定版本                                   |
 | INSTALL_XDEBUG      | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
-| HIREDIS_VERSION     | hiredis版本（swoole开启同步redis用）                 |
+| ~~HIREDIS_VERSION~~ | hiredis版本，swoole异步redis需要（已弃用，详见[说明](https://wiki.swoole.com/#/coroutine_client/redis)）|
 | MYSQL_ROOT_PASSWORD | mysql管理员密码                                      |
 | MYSQL_USER          | 需要新加的用户名                                     |
 | MYSQL_PASS          | 需要新加的用户的密码                                 |
