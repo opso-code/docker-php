@@ -20,7 +20,7 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso-
 
 ### PHP
 
-使用的官方 `php:fpm` 镜像，可在 `.env` 中定义具体版本，默认 `7.3.11-fpm`。
+使用的官方 `php:fpm` 镜像，可在 `.env` 中定义具体版本，默认 `7.3-fpm`。
 
 > 默认替换了国内源，修改了时区（`Asia/Shanghai`），可在 `.env` 中自定义。
 
@@ -46,9 +46,9 @@ Docker环境安装可以参考我的博客 ：[Docker化PHP环境](https://opso-
 
 说明：
 
-- `swoole` 版本默认`4.4.0`，编译参数可自行修改，默认是 `--enable-async-redis --enable-mysqlnd --enable-sockets --enable-openssl`
+- `swoole` 版本默认`4.5.3`，编译参数可自行修改，默认是 `--enable-mysqlnd --enable-sockets --enable-openssl`
 - 添加了 `composer` 支持
-- 添加了 `xdebug` 支持，默认指定 `xdebug.idekey = PHPSTORM`，端口是 `9001`，可以在 `phpstorm` 中配置，实现逐步调试功能。
+- 添加了 `xdebug` 支持，默认指定 `xdebug.idekey = PHPSTORM`，端口是 `9001`，可以在 `phpstorm` 中配置，实现逐步调试功能。注意，与swoole协程功能冲突。
 
 ### Nginx
 
@@ -101,7 +101,7 @@ $ cp env-example .env
 | NGINX_VERSION       | nginx指定版本                                        |
 | SWOOLE_VERSION      | swoole扩展指定版本                                   |
 | INSTALL_XDEBUG      | 是否安装xdebug（注意，命令行下运行与swoole协程冲突） |
-| ~~HIREDIS_VERSION~~ | hiredis版本，swoole异步redis需要（已弃用，详见[说明](https://wiki.swoole.com/#/coroutine_client/redis)）|
+| ~~HIREDIS_VERSION~~ | hiredis版本，swoole异步redis需要                     |
 | MYSQL_ROOT_PASSWORD | mysql管理员密码                                      |
 | MYSQL_USER          | 需要新加的用户名                                     |
 | MYSQL_PASS          | 需要新加的用户的密码                                 |
