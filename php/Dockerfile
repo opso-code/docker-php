@@ -1,4 +1,4 @@
-ARG PHP_VERSION=7.2
+ARG PHP_VERSION=7.3
 FROM php:${PHP_VERSION}-fpm
 LABEL maintainer="opso <945206413@qq.com>"
 
@@ -19,7 +19,6 @@ RUN apt-get update && \
     curl \
     wget \
     zip \
-    bzip2 \
     git \
     unzip \
     procps \
@@ -38,26 +37,11 @@ RUN apt-get update && \
     apt-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# install hiredis
-ARG HIREDIS_VERSION=0.14.0
-RUN wget https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz -O hiredis.tar.gz \
-    && mkdir -p hiredis \
-    && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 \
-    && rm hiredis.tar.gz \
-    && ( \
-        cd hiredis \
-        && make -j$(nproc) \
-        && make install \
-        && ldconfig \
-    ) \
-    && rm -r hiredis
-
 # install php extentions
 RUN pecl channel-update pecl.php.net \
     && docker-php-ext-configure gd \
-    --enable-gd-native-ttf \
-    --with-jpeg-dir=/usr/lib \
-    --with-freetype-dir=/usr/include/freetype2 \
+    --with-jpeg-dir=/usr/include/ \
+    --with-freetype-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) zip bz2 bcmath mysqli pdo_mysql gd gmp sockets pcntl sysvmsg sysvsem sysvshm \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
@@ -93,7 +77,7 @@ RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz 
     && ( \
         cd swoole \
         && phpize \
-        && ./configure --enable-async-redis --enable-mysqlnd --enable-sockets --enable-openssl \
+        && ./configure --enable-mysqlnd --enable-sockets --enable-openssl --enable-http2 \
         && make -j$(nproc) \
         && make install \
     ) \
