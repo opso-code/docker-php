@@ -85,9 +85,9 @@ RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz 
     && docker-php-ext-enable swoole
 
 # install composer
-RUN curl -sS https://install.phpcomposer.com/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && composer config -g repositories.packagist composer https://packagist.phpcomposer.com \
+RUN curl -sfL --connect-timeout 5 --max-time 15 --retry 5 --retry-delay 2 --retry-max-time 60 https://install.phpcomposer.com/installer | php -- --install-dir="/usr/bin" --filename=composer \
+    && chmod +x "/usr/bin/composer" \
+    && composer config -g repo.packagist composer https://packagist.phpcomposer.com \
     && composer self-update --clean-backups
 
 # clean up
