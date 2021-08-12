@@ -5,7 +5,8 @@ LABEL maintainer="opso <945206413@qq.com>"
 # replace sources.list
 ARG CHANGE_SOURCE=false
 RUN if [ ${CHANGE_SOURCE} = true ]; then \
-    sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list \
+    cp /etc/apt/sources.list /etc/apt/sources.list.back \
+    && sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list \
     && sed -i 's/security.debian.org/mirrors.163.com/g' /etc/apt/sources.list \
 ;fi
 
@@ -16,6 +17,7 @@ RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 # init
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    vim \
     curl \
     wget \
     zip \
@@ -77,7 +79,7 @@ RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz 
     && ( \
         cd swoole \
         && phpize \
-        && ./configure --enable-mysqlnd --enable-sockets --enable-openssl --enable-http2 \
+        && ./configure --enable-mysqlnd --enable-openssl \
         && make -j$(nproc) \
         && make install \
     ) \
@@ -87,7 +89,6 @@ RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz 
 # install composer
 RUN curl -sfL --connect-timeout 5 --max-time 15 --retry 5 --retry-delay 2 --retry-max-time 60 https://install.phpcomposer.com/installer | php -- --install-dir="/usr/bin" --filename=composer \
     && chmod +x "/usr/bin/composer" \
-    && composer config -g repo.packagist composer https://packagist.phpcomposer.com \
     && composer self-update --clean-backups
 
 # clean up
