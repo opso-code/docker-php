@@ -8,6 +8,7 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
     cp /etc/apt/sources.list /etc/apt/sources.list.back \
     && sed -i 's/deb.debian.org/mirrors.163.com/g' /etc/apt/sources.list \
     && sed -i 's/security.debian.org/mirrors.163.com/g' /etc/apt/sources.list \
+    && sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 ;fi
 
 ARG TIMEZONE=Asia/Shanghai
