@@ -82,19 +82,36 @@ services:
 #       - ${MONGO_PORT}:27017
 #     networks:
 #       - lnmp-tier
-### MONGODB ###
-  memcached:
-    image: "memcached:1.6.1"
-    container_name: compose-memcached
+# ### MEMCACHED ###
+#   memcached:
+#     image: "memcached:1.6.1"
+#     container_name: compose-memcached
+#     ports: 
+#       - 11211:11211
+#     networks:
+#       - lnmp-tier
+### PROMETHEUS ###
+  prometheus:
+    image: "prom/prometheus"
+    container_name: compose-prometheus
+    # restart: always
     ports: 
-      - 11211:11211
+      - ${PROMETHEUS_PORT}:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - lnmp-tier
-  memcached2:
-    image: "memcached:1.4.39"
-    container_name: compose-memcached2
+
+  grafana:
+    image: "grafana/grafana-oss"
+    container_name: compose-grafana
+    # restart: always
     ports: 
-      - 11212:11211
+      - ${GRAFANA_PORT}:3000
+    volumes:
+      - ${GRAFANA_PATH}/data:/var/lib/grafana
+      - ${GRAFANA_PATH}/log:/var/log/grafana
+      - ./grafana/custom.ini:/etc/grafana/grafana.ini
     networks:
       - lnmp-tier
 
