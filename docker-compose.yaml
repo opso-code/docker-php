@@ -16,7 +16,7 @@ services:
       TZ: ${TZ}
     image: lnmp-php
     container_name: compose-php
-    restart: unless-stop
+    restart: unless-stopped
     volumes:
       - ${WORK_DIR}:/data
     working_dir: /data
@@ -34,7 +34,7 @@ services:
       TZ: ${TZ}
     image: lnmp-nginx
     container_name: compose-nginx
-    restart: unless-stop
+    restart: unless-stopped
     depends_on:
       - php
     volumes:
