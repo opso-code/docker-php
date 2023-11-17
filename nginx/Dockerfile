@@ -2,9 +2,9 @@ ARG NGINX_VERSION=stable
 FROM nginx:${NGINX_VERSION}-alpine
 LABEL maintainer="opso <945206413@qq.com>"
 
-ARG TIMEZONE=Asia/Shanghai
-RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" > /etc/timezone
+ARG TZ=Asia/Shanghai
+RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo "${TZ}" > /etc/timezone
 
 ARG CHANGE_SOURCE=false
 RUN if [ ${CHANGE_SOURCE} = true ]; then \

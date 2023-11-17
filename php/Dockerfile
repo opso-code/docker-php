@@ -11,9 +11,10 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
     && sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 ;fi
 
-ARG TIMEZONE=Asia/Shanghai
-RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" > /etc/timezone
+# timezone
+ARG TZ=Asia/Shanghai
+RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo "${TZ}" > /etc/timezone
 
 # init
 RUN apt-get update && \
@@ -46,8 +47,6 @@ RUN pecl channel-update pecl.php.net \
     --with-jpeg-dir=/usr/include/ \
     --with-freetype-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) zip bz2 bcmath mysqli pdo_mysql gd gmp sockets pcntl sysvmsg sysvsem sysvshm \
-    && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
     && pecl install redis \
@@ -55,6 +54,30 @@ RUN pecl channel-update pecl.php.net \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
     && pecl clear-cache
+
+# install mongodb extention
+ARG EXT_MONGODB_VERSION=""
+RUN if [ -z ${EXT_MONGODB_VERSION} ]; then \
+    pecl install https://pecl.php.net/get/mongodb \
+    && pecl clear-cache \
+    && docker-php-ext-enable mongodb \
+;else \
+    pecl install https://pecl.php.net/get/mongodb-${EXT_MONGODB_VERSION}.tgz \
+    && pecl clear-cache \
+    && docker-php-ext-enable mongodb \
+;fi
+
+# install swoole extention
+ARG EXT_SWOOLE_VERSION=""
+RUN if [ -z ${EXT_SWOOLE_VERSION} ]; then \
+    pecl install https://pecl.php.net/get/swoole \
+    && pecl clear-cache \
+    && docker-php-ext-enable swoole \
+;else \
+    pecl install https://pecl.php.net/get/swoole-${EXT_SWOOLE_VERSION}.tgz \
+    && pecl clear-cache \
+    && docker-php-ext-enable swoole \
+;fi
 
 # install xdebug and config phpstom xdebug
 ARG INSTALL_XDEBUG
@@ -70,22 +93,6 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     && echo "xdebug.remote_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_port = 9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
 ;fi
-	
-# install swoole extention
-ARG SWOOLE_VERSION
-RUN wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -O swoole.tar.gz \
-    && mkdir -p swoole \
-    && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
-    && rm swoole.tar.gz \
-    && ( \
-        cd swoole \
-        && phpize \
-        && ./configure --enable-mysqlnd --enable-openssl \
-        && make -j$(nproc) \
-        && make install \
-    ) \
-    && rm -r swoole \
-    && docker-php-ext-enable swoole
 
 # install composer
 RUN curl -sfL --connect-timeout 5 --max-time 15 --retry 5 --retry-delay 2 --retry-max-time 60 https://install.phpcomposer.com/installer | php -- --install-dir="/usr/bin" --filename=composer \

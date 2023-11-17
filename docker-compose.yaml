@@ -6,14 +6,17 @@ services:
     build:
       context: ./php
       args: 
-      - TIMEZONE=${TIMEZONE}
+      - TIMEZONE=${TZ}
       - CHANGE_SOURCE=${CHANGE_SOURCE}
       - PHP_VERSION=${PHP_VERSION}
-      - SWOOLE_VERSION=${SWOOLE_VERSION}
+      - EXT_SWOOLE_VERSION=${EXT_SWOOLE_VERSION}
+      - EXT_MONGODB_VERSION=${EXT_MONGODB_VERSION}
       - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    environment:
+      TZ: ${TZ}
     image: lnmp-php
     container_name: compose-php
-    restart: always
+    restart: unless-stop
     volumes:
       - ${WORK_DIR}:/data
     working_dir: /data
@@ -24,12 +27,14 @@ services:
     build:
       context: ./nginx
       args: 
-      - TIMEZONE=${TIMEZONE}
+      - TZ=${TZ}
       - CHANGE_SOURCE=${CHANGE_SOURCE}
       - NGINX_VERSION=${NGINX_VERSION}
+    environment:
+      TZ: ${TZ}
     image: lnmp-nginx
     container_name: compose-nginx
-    restart: always
+    restart: unless-stop
     depends_on:
       - php
     volumes:
@@ -43,6 +48,7 @@ services:
       - 443:443
     networks:
       - lnmp-tier
+
 # ### MYSQL ###
 #   mysql:
 #     build:
@@ -63,6 +69,7 @@ services:
 #       - ${MYSQL_PORT}:3306
 #     networks:
 #       - lnmp-tier
+
 # ### MONGODB ###
 #   mongo:
 #     build:
@@ -82,38 +89,6 @@ services:
 #       - ${MONGO_PORT}:27017
 #     networks:
 #       - lnmp-tier
-# ### MEMCACHED ###
-#   memcached:
-#     image: "memcached:1.6.1"
-#     container_name: compose-memcached
-#     ports: 
-#       - 11211:11211
-#     networks:
-#       - lnmp-tier
-### PROMETHEUS ###
-  prometheus:
-    image: "prom/prometheus"
-    container_name: compose-prometheus
-    # restart: always
-    ports: 
-      - ${PROMETHEUS_PORT}:9090
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - lnmp-tier
-
-  grafana:
-    image: "grafana/grafana-oss"
-    container_name: compose-grafana
-    # restart: always
-    ports: 
-      - ${GRAFANA_PORT}:3000
-    volumes:
-      - ${GRAFANA_PATH}/data:/var/lib/grafana
-      - ${GRAFANA_PATH}/log:/var/log/grafana
-      - ./grafana/custom.ini:/etc/grafana/grafana.ini
-    networks:
-      - lnmp-tier
 
 networks:
   lnmp-tier:
